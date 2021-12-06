@@ -6,6 +6,11 @@ const IndexApp = styled(Container)`
 
 `;
 
+export const MetaGrid = styled(Grid)`
+    justify-content: space-between;
+    flex-wrap: nowrap; 
+`;
+
 export const MetaInfoBox = styled(Box)`
     padding-top: ${theme.spacing(2)};
 `;
