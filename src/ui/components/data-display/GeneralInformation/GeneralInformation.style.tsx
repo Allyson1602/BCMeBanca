@@ -1,4 +1,4 @@
-import { Box, Grid, styled, Typography } from '@mui/material';
+import { Box, Grid, styled, TextField, Typography } from '@mui/material';
 import theme from 'ui/themes/theme';
 
 export const GeneralInformationContainer = styled(Grid)`
@@ -21,6 +21,15 @@ export const MetaInfoBox = styled(Box)`
 export const Title = styled(Typography)`
     text-align: center;
     font-size: ${theme.typography.fontSize}px;
+    color: ${theme.palette.primary.main};
+`;
+
+export const QuantddBcoin = styled(TextField)`
+    width: 100%;
+
+    & input {
+        text-align: center;
+    }
 `;
 
 export default GeneralInformationContainer;

@@ -1,9 +1,15 @@
 import { Box, Stack, Tabs, Tab } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { IMetadados } from 'pages';
 import React from 'react';
 import { ContaInfosPaper, ContaInfosTypo } from './TabelaContas.style';
 
-const TabelaContas: React.FC = () => {
+export interface ITabelaContasProps {
+    metadados: IMetadados;
+    changeMetadados: (md: IMetadados) => void;
+}
+
+const TabelaContas: React.FC<ITabelaContasProps> = (props) => {
 
     const [value, setValue] = React.useState(1);
     const [conta, setConta] = React.useState<IRows | undefined>(rows[1]);
