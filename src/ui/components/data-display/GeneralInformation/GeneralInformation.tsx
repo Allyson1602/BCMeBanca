@@ -1,57 +1,127 @@
 import { InputAdornment, Stack, TextField } from '@mui/material';
-import { IMetadados } from 'pages';
-import React, { useState } from 'react';
+import { IApiConversor, IDadosCoinGecko } from 'data/@types/api';
+import { IMetadados } from 'data/@types/metadados';
+import { ApiServiceConversor } from 'data/services/ApiService';
+import React, { useEffect, useState } from 'react';
 import theme from 'ui/themes/theme';
 import GeneralInformationContainer, { BcoinInformations, MainInformations, MetaInfoBox, Title, QuantddBcoin } from './GeneralInformation.style';
 
 export interface ITabelaContasProps {
     metadados: IMetadados;
     changeMetadados: (md: IMetadados) => void;
+    converterRealDolar: (valor: number, moeda: boolean) => number;
 }
 
-const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMetadados }) => {
-    
-    const [ valorBcoin ] = useState(metadados.valorBcoin);
+const CoinGecko = require('coingecko-api');
+const CoinGeckoClient = new CoinGecko();
 
+const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMetadados, converterRealDolar }) => {
+    
     const [ investimento, setInvestimento ] = useState(metadados.investimento);
     const [ carteira, setCarteira ] = useState(metadados.carteira);
     const [ lucro, setLucro ] = useState(metadados.lucro);
     const [ saque, setSaque ] = useState(metadados.saque);
+    const [ valorBcoin, setValorBcoin ] = useState(0);
     const [ quantddBcoin, setQuantddBcoin ] = useState(metadados.quantddBcoin);
 
-    const changeValue = (ev: React.ChangeEvent<HTMLInputElement>, campo: string) => {
-        let value = ev.target.value;
+    const [ investimentoReal, setInvestimentoReal ] = useState(0);
+    const [ carteiraReal, setCarteiraReal ] = useState(0);
+    const [ lucroReal, setLucroReal ] = useState(0);
+    const [ saqueReal, setSaqueReal ] = useState(0);
+    const [ valorBcoinReal, setValorBcoinReal ] = useState(0);
 
-        if(value === "") {
-            value = "0";
+    useEffect(() => {
+
+        const dadosCoinGecko: Promise<IDadosCoinGecko> = CoinGeckoClient.coins.fetch("bomber-coin");
+        dadosCoinGecko.then((dados) => {
+          setValorBcoin(dados.data.tickers[0].converted_last.usd);
+        });
+
+        ApiServiceConversor.get('', {
+          params: {
+            q: 'BRL_USD'
+          }
+        }).then(({data}: IApiConversor) => {
+          const convertido: number = data.BRL_USD.val;
+          setValorBcoinReal(valorBcoin * convertido);
+        });
+        
+        console.log(valorBcoinReal);
+    }), [];
+
+    // useEffect(() => {
+    //     setValorBcoin(metadados.valorBcoin);
+        
+    //     console.log(metadados.valorBcoin);
+
+    //     // console.log(converterRealDolar(metadados.valorBcoin, true));
+    //     setValorBcoinReal(converterRealDolar(metadados.valorBcoin as number, true));
+    // }, []);
+
+    const changeValue = (ev: React.ChangeEvent<HTMLInputElement>, campo: string, moeda: boolean = false) => {
+        let tValue = ev.target.value;
+
+        if(tValue === "") {
+            tValue = "0";
         }else {
-            if(isNaN(parseInt(value))) return;
+            if(isNaN(parseInt(tValue))) return;
         }
+
+        const value = parseInt(tValue);
 
         switch(campo) {
             case "investimento": 
-                setInvestimento(parseInt(value));
+                setInvestimento(value);
                 metadados.investimento = investimento;
+
+                if(moeda) {
+                    setInvestimentoReal(converterRealDolar(value, true));
+                }else {
+                    setInvestimento(converterRealDolar(value, false));
+                }
+
                 break;
 
             case "carteira": 
-                setCarteira(parseInt(value));
+                setCarteira(value);
                 metadados.carteira = carteira;
+
+                if(moeda) {
+                    setCarteiraReal(converterRealDolar(value, true));
+                }else {
+                    setCarteira(converterRealDolar(value, false));
+                }
+
                 break;
 
             case "lucro": 
-                setLucro(parseInt(value));
+                setLucro(value);
                 metadados.lucro = lucro;
+
+                if(moeda) {
+                    setLucroReal(converterRealDolar(value, true));
+                }else {
+                    setLucro(converterRealDolar(value, false));
+                }
+
                 break;
 
             case "quantddBcoin": 
-                setQuantddBcoin(parseInt(value));
+                setQuantddBcoin(value);
                 metadados.quantddBcoin = quantddBcoin;
+
                 break;
 
             case "saque": 
-                setSaque(parseInt(value));
+                setSaque(value);
                 metadados.saque = saque;
+
+                if(moeda) {
+                    setSaqueReal(converterRealDolar(value, true));
+                }else {
+                    setSaque(converterRealDolar(value, false));
+                }
+
                 break;
         }
 
@@ -69,14 +139,14 @@ const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMet
                         <TextField 
                             size={"small"} 
                             value={investimento}
-                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "investimento")}
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "investimento", true)}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                             }} 
                         />
                         <TextField 
                             size={"small"} 
-                            value={investimento}
+                            value={investimentoReal}
                             onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "investimento")}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">R$</InputAdornment>,
@@ -92,14 +162,14 @@ const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMet
                         <TextField 
                             size={"small"} 
                             value={carteira}
-                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "carteira")}
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "carteira", true)}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                             }} 
                         />
                         <TextField 
                             size={"small"} 
-                            value={carteira}
+                            value={carteiraReal}
                             onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "carteira")}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">R$</InputAdornment>,
@@ -115,14 +185,14 @@ const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMet
                         <TextField 
                             size={"small"} 
                             value={saque}
-                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "saque")}
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "saque", true)}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                             }} 
                         />
                         <TextField 
                             size={"small"} 
-                            value={saque}
+                            value={saqueReal}
                             onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "saque")}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">R$</InputAdornment>,
@@ -138,14 +208,14 @@ const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMet
                         <TextField 
                             size={"small"} 
                             value={lucro}
-                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "lucro")}
+                            onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "lucro", true)}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
                             }} 
                         />
                         <TextField 
                             size={"small"} 
-                            value={lucro}
+                            value={lucroReal}
                             onChange={(ev: React.ChangeEvent<HTMLInputElement>) => changeValue(ev, "lucro")}
                             InputProps={{
                                 startAdornment: <InputAdornment position="start">R$</InputAdornment>,
@@ -173,7 +243,7 @@ const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMet
 
                     <TextField 
                         size={"small"} 
-                        value={valorBcoin}
+                        value={valorBcoinReal}
                         InputProps={{
                             startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                             readOnly: true

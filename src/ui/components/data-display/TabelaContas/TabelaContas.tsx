@@ -1,7 +1,7 @@
 import { Box, Stack, Tabs, Tab } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { IMetadados } from 'pages';
 import React from 'react';
+import { IMetadados } from 'data/@types/metadados';
 import { ContaInfosPaper, ContaInfosTypo } from './TabelaContas.style';
 
 export interface ITabelaContasProps {
@@ -82,9 +82,9 @@ export default TabelaContas;
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70, type: "string", editable: true },
   { field: 'data', headerName: 'Data', width: 100, type: "date", editable: true },
-  { field: 'investido', headerName: 'Investido', width: 140, type: "string", editable: true },
-  { field: 'saque', headerName: 'Saque', width: 130, type: "string", editable: true },
-  { field: 'lucro', headerName: 'Lucro', width: 130, type: "string", editable: true },
+  { field: 'investido', headerName: 'Investido ($)', width: 140, type: "string", editable: true },
+  { field: 'saque', headerName: 'Saque ($)', width: 130, type: "string", editable: true },
+  { field: 'lucro', headerName: 'Lucro ($)', width: 130, type: "string", editable: true },
   { field: 'bcoin', headerName: 'Bcoin', width: 70, type: "string", editable: true },
 ];
 
@@ -111,39 +111,39 @@ const rows: Array<IRows> = [
   {
     id: "1",
     metadados: [
-      { id: "1", data: new Date('01/05/2021'), investido: 'R$ 5000', saque: 'R$ 0', lucro: 'R$ -5000', bcoin: '5' },
-      { id: "2", data: new Date('01/05/2021'), investido: 'R$ 0', saque: 'R$ 0', lucro: 'R$ 0', bcoin: '7' },
-      { id: "3", data: new Date('01/05/2021'), investido: 'R$ 0', saque: 'R$ 0', lucro: 'R$ 0', bcoin: '4' },
-      { id: "4", data: new Date('01/05/2021'), investido: 'R$ 3000', saque: 'R$ 0', lucro: 'R$ -3000', bcoin: '3' },
-      { id: "5", data: new Date('01/05/2021'), investido: 'R$ 1000', saque: 'R$ 0', lucro: 'R$ -1000', bcoin: '11' },
-      { id: "6", data: new Date('01/05/2021'), investido: 'R$ 0', saque: 'R$ 4000', lucro: 'R$ 4000', bcoin: '6' },
-      { id: "7", data: new Date('01/05/2021'), investido: 'R$ 0', saque: 'R$ 1000', lucro: 'R$ 1000', bcoin: '4' },
+      { id: "1", data: new Date('01/05/2021'), investido: '$ 5000', saque: '$ 0', lucro: '$ -5000', bcoin: '5' },
+      { id: "2", data: new Date('01/05/2021'), investido: '$ 0', saque: '$ 0', lucro: '$ 0', bcoin: '7' },
+      { id: "3", data: new Date('01/05/2021'), investido: '$ 0', saque: '$ 0', lucro: '$ 0', bcoin: '4' },
+      { id: "4", data: new Date('01/05/2021'), investido: '$ 3000', saque: '$ 0', lucro: '$ -3000', bcoin: '3' },
+      { id: "5", data: new Date('01/05/2021'), investido: '$ 1000', saque: '$ 0', lucro: '$ -1000', bcoin: '11' },
+      { id: "6", data: new Date('01/05/2021'), investido: '$ 0', saque: '$ 4000', lucro: '$ 4000', bcoin: '6' },
+      { id: "7", data: new Date('01/05/2021'), investido: '$ 0', saque: '$ 1000', lucro: '$ 1000', bcoin: '4' },
       { id: "8", data: new Date(), investido: '', saque: '', lucro: '', bcoin: '' },
     ]
   },
   {
     id: "2",
     metadados: [
-      { id: "1", data: new Date('02/07/2021'), investido: 'R$ 5000', saque: 'R$ 0', lucro: 'R$ -5000', bcoin: '5' },
-      { id: "2", data: new Date('02/07/2021'), investido: 'R$ 0', saque: 'R$ 0', lucro: 'R$ 0', bcoin: '7' },
-      { id: "3", data: new Date('02/07/2021'), investido: 'R$ 0', saque: 'R$ 0', lucro: 'R$ 0', bcoin: '4' },
-      { id: "4", data: new Date('02/07/2021'), investido: 'R$ 3000', saque: 'R$ 0', lucro: 'R$ -3000', bcoin: '3' },
-      { id: "5", data: new Date('02/07/2021'), investido: 'R$ 1000', saque: 'R$ 0', lucro: 'R$ -1000', bcoin: '11' },
-      { id: "6", data: new Date('02/07/2021'), investido: 'R$ 0', saque: 'R$ 4000', lucro: 'R$ 4000', bcoin: '6' },
-      { id: "7", data: new Date('02/07/2021'), investido: 'R$ 0', saque: 'R$ 1000', lucro: 'R$ 1000', bcoin: '4' },
+      { id: "1", data: new Date('02/07/2021'), investido: '$ 5000', saque: '$ 0', lucro: '$ -5000', bcoin: '5' },
+      { id: "2", data: new Date('02/07/2021'), investido: '$ 0', saque: '$ 0', lucro: '$ 0', bcoin: '7' },
+      { id: "3", data: new Date('02/07/2021'), investido: '$ 0', saque: '$ 0', lucro: '$ 0', bcoin: '4' },
+      { id: "4", data: new Date('02/07/2021'), investido: '$ 3000', saque: '$ 0', lucro: '$ -3000', bcoin: '3' },
+      { id: "5", data: new Date('02/07/2021'), investido: '$ 1000', saque: '$ 0', lucro: '$ -1000', bcoin: '11' },
+      { id: "6", data: new Date('02/07/2021'), investido: '$ 0', saque: '$ 4000', lucro: '$ 4000', bcoin: '6' },
+      { id: "7", data: new Date('02/07/2021'), investido: '$ 0', saque: '$ 1000', lucro: '$ 1000', bcoin: '4' },
       { id: "8", data: new Date(), investido: '', saque: '', lucro: '', bcoin: '' },
     ]
   },
   {
     id: "3",
     metadados: [
-      { id: "1", data: new Date('03/10/2021'), investido: 'R$ 5000', saque: 'R$ 0', lucro: 'R$ -5000', bcoin: '5' },
-      { id: "2", data: new Date('03/10/2021'), investido: 'R$ 0', saque: 'R$ 0', lucro: 'R$ 0', bcoin: '7' },
-      { id: "3", data: new Date('03/10/2021'), investido: 'R$ 0', saque: 'R$ 0', lucro: 'R$ 0', bcoin: '4' },
-      { id: "4", data: new Date('03/10/2021'), investido: 'R$ 3000', saque: 'R$ 0', lucro: 'R$ -3000', bcoin: '3' },
-      { id: "5", data: new Date('03/10/2021'), investido: 'R$ 1000', saque: 'R$ 0', lucro: 'R$ -1000', bcoin: '11' },
-      { id: "6", data: new Date('03/10/2021'), investido: 'R$ 0', saque: 'R$ 4000', lucro: 'R$ 4000', bcoin: '6' },
-      { id: "7", data: new Date('03/10/2021'), investido: 'R$ 0', saque: 'R$ 1000', lucro: 'R$ 1000', bcoin: '4' },
+      { id: "1", data: new Date('03/10/2021'), investido: '$ 5000', saque: '$ 0', lucro: '$ -5000', bcoin: '5' },
+      { id: "2", data: new Date('03/10/2021'), investido: '$ 0', saque: '$ 0', lucro: '$ 0', bcoin: '7' },
+      { id: "3", data: new Date('03/10/2021'), investido: '$ 0', saque: '$ 0', lucro: '$ 0', bcoin: '4' },
+      { id: "4", data: new Date('03/10/2021'), investido: '$ 3000', saque: '$ 0', lucro: '$ -3000', bcoin: '3' },
+      { id: "5", data: new Date('03/10/2021'), investido: '$ 1000', saque: '$ 0', lucro: '$ -1000', bcoin: '11' },
+      { id: "6", data: new Date('03/10/2021'), investido: '$ 0', saque: '$ 4000', lucro: '$ 4000', bcoin: '6' },
+      { id: "7", data: new Date('03/10/2021'), investido: '$ 0', saque: '$ 1000', lucro: '$ 1000', bcoin: '4' },
       { id: "8", data: new Date(), investido: '', saque: '', lucro: '', bcoin: '' },
     ]
   }
