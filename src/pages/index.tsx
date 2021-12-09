@@ -27,41 +27,41 @@ const Home: NextPage = () => {
 
   }, []);
 
-  const converterRealDolar = (valor: number, tipoMoeda: boolean): number => {
-    let moeda = 0;
+  // const converterRealDolar = (valor: number, tipoMoeda: boolean): number => {
+  //   let moeda = 0;
 
-    if(tipoMoeda) {
-      ApiServiceConversor.get('', {
-        params: {
-          q: 'BRL_USD'
-        }
-      }).then(({data}: IApiConversor) => {
-        const convertido: number = data.BRL_USD.val;
-        moeda = (valor * convertido);
-        console.log(moeda);
-      });
+  //   if(tipoMoeda) {
+  //     ApiServiceConversor.get('', {
+  //       params: {
+  //         q: 'BRL_USD'
+  //       }
+  //     }).then(({data}: IApiConversor) => {
+  //       const convertido: number = data.BRL_USD.val;
+  //       moeda = (valor * convertido);
+  //       console.log(moeda);
+  //     });
 
-    }else {
-      ApiServiceConversor.get('', {
-        params: {
-          q: 'USD_BRL'
-        }
-      }).then(({data}: IApiConversor) => {
-        // console.log(data);
-        const convertido: number = data.USD_BRL.val;
-        moeda = (valor * convertido);
-      });
-    }
+  //   }else {
+  //     ApiServiceConversor.get('', {
+  //       params: {
+  //         q: 'USD_BRL'
+  //       }
+  //     }).then(({data}: IApiConversor) => {
+  //       // console.log(data);
+  //       const convertido: number = data.USD_BRL.val;
+  //       moeda = (valor * convertido);
+  //     });
+  //   }
 
-    return moeda;
-  };
+  //   return moeda;
+  // };
 
   const changeMetadados = (md: IMetadados): void => { setMetadados(md); }
 
   return (
     <IndexApp>
 
-      <GeneralInformation metadados={metadados} changeMetadados={changeMetadados} converterRealDolar={converterRealDolar} />
+      <GeneralInformation metadados={metadados} changeMetadados={changeMetadados} />
 
       <div className="anuncio" style={{margin: "50px 0px", height: "70px", width: "100%", background: "lightBlue"}}>Anúncio</div>
 

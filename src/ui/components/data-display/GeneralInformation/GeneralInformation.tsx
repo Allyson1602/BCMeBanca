@@ -46,17 +46,7 @@ const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMet
           setValorBcoinReal(valorBcoin * convertido);
         });
         
-        console.log(valorBcoinReal);
     }), [];
-
-    // useEffect(() => {
-    //     setValorBcoin(metadados.valorBcoin);
-        
-    //     console.log(metadados.valorBcoin);
-
-    //     // console.log(converterRealDolar(metadados.valorBcoin, true));
-    //     setValorBcoinReal(converterRealDolar(metadados.valorBcoin as number, true));
-    // }, []);
 
     const changeValue = (ev: React.ChangeEvent<HTMLInputElement>, campo: string, moeda: boolean = false) => {
         let tValue = ev.target.value;
@@ -71,37 +61,99 @@ const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMet
 
         switch(campo) {
             case "investimento": 
-                setInvestimento(value);
-                metadados.investimento = investimento;
 
                 if(moeda) {
-                    setInvestimentoReal(converterRealDolar(value, true));
+                    setInvestimento(value);
+                    metadados.investimento = investimento;
+                    changeMetadados(metadados);
+
+                    ApiServiceConversor.get('', {
+                      params: {
+                        q: 'BRL_USD'
+                      }
+                    }).then(({data}: IApiConversor) => {
+                      const convertido: number = data.BRL_USD.val;
+                      setInvestimentoReal(value * convertido);
+                    });
+
                 }else {
-                    setInvestimento(converterRealDolar(value, false));
+                    setInvestimentoReal(value);
+                    metadados.investimento = investimento;
+                    changeMetadados(metadados);
+
+                    ApiServiceConversor.get('', {
+                      params: {
+                        q: 'BRL_USD'
+                      }
+                    }).then(({data}: IApiConversor) => {
+                      const convertido: number = data.BRL_USD.val;
+                      setInvestimento(value * convertido);
+                    });
+
                 }
 
                 break;
 
             case "carteira": 
-                setCarteira(value);
-                metadados.carteira = carteira;
-
                 if(moeda) {
-                    setCarteiraReal(converterRealDolar(value, true));
+                    setCarteira(value);
+                    metadados.carteira = carteira;
+                    changeMetadados(metadados);
+
+                    ApiServiceConversor.get('', {
+                    params: {
+                        q: 'BRL_USD'
+                    }
+                    }).then(({data}: IApiConversor) => {
+                    const convertido: number = data.BRL_USD.val;
+                    setCarteiraReal(value * convertido);
+                    });
+
                 }else {
-                    setCarteira(converterRealDolar(value, false));
+                    setCarteiraReal(value);
+                    metadados.carteira = carteira;
+                    changeMetadados(metadados);
+
+                    ApiServiceConversor.get('', {
+                        params: {
+                            q: 'BRL_USD'
+                        }
+                    }).then(({data}: IApiConversor) => {
+                        const convertido: number = data.BRL_USD.val;
+                        setCarteira(value * convertido);
+                    });
                 }
 
                 break;
 
             case "lucro": 
-                setLucro(value);
-                metadados.lucro = lucro;
-
                 if(moeda) {
-                    setLucroReal(converterRealDolar(value, true));
+                    setLucro(value);
+                    metadados.lucro = lucro;
+                    changeMetadados(metadados);
+
+                    ApiServiceConversor.get('', {
+                        params: {
+                            q: 'BRL_USD'
+                        }
+                    }).then(({data}: IApiConversor) => {
+                        const convertido: number = data.BRL_USD.val;
+                        setLucroReal(value * convertido);
+                    });
+
                 }else {
-                    setLucro(converterRealDolar(value, false));
+                    setLucroReal(value);
+                    metadados.lucro = lucro;
+                    changeMetadados(metadados);
+
+                    ApiServiceConversor.get('', {
+                        params: {
+                            q: 'BRL_USD'
+                        }
+                    }).then(({data}: IApiConversor) => {
+                        const convertido: number = data.BRL_USD.val;
+                        setLucro(value * convertido);
+                    });
                 }
 
                 break;
@@ -113,13 +165,33 @@ const GeneralInformation: React.FC<ITabelaContasProps> = ({ metadados, changeMet
                 break;
 
             case "saque": 
-                setSaque(value);
-                metadados.saque = saque;
-
                 if(moeda) {
-                    setSaqueReal(converterRealDolar(value, true));
+                    setSaque(value);
+                    metadados.saque = saque;
+                    changeMetadados(metadados);
+
+                    ApiServiceConversor.get('', {
+                        params: {
+                            q: 'BRL_USD'
+                        }
+                    }).then(({data}: IApiConversor) => {
+                        const convertido: number = data.BRL_USD.val;
+                        setSaqueReal(value * convertido);
+                    });
+
                 }else {
-                    setSaque(converterRealDolar(value, false));
+                    setSaqueReal(value);
+                    metadados.saque = saque;
+                    changeMetadados(metadados);
+
+                    ApiServiceConversor.get('', {
+                        params: {
+                            q: 'BRL_USD'
+                        }
+                    }).then(({data}: IApiConversor) => {
+                        const convertido: number = data.BRL_USD.val;
+                        setSaque(value * convertido);
+                    });
                 }
 
                 break;
